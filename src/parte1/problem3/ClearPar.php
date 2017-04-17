@@ -23,5 +23,9 @@ class ClearPar
 
 }
 
+// Examples:
+// Input: ()())()       Output: ()()()
+// Input: ()(()         Output: ()()
+
 $input = trim(fgets(STDIN));
 echo (new ClearPar())->build($input);

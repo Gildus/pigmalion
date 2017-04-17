@@ -33,5 +33,9 @@ class ChangeString
     }
 }
 
+// Examples:
+// Input: 123 abcd*3*       Output: 123 bcde*3*
+// Input: **Casa 52       Output: **Dbtb 52
+
 $input = fgets(STDIN);
 echo (new ChangeString())->build($input);
