@@ -3,7 +3,7 @@ namespace Pigmalion\Parte1\Problem1;
 
 class ChangeString
 {
-    protected function convertCharacter($character)
+    protected function convertCharacter($character) : string
     {
         if (ord($character) === 90) {
             return 'A';
@@ -20,7 +20,7 @@ class ChangeString
         return $character;
     }
 
-    public function build($string)
+    public function build($string) : string
     {
         $result = '';
         if ($string && strlen($string) > 0) {
