@@ -13,7 +13,7 @@ class ChangeString
             return 'a';
         }
 
-        if (ord($character) >= 65 || ord($character) >= 97 && ord($character) >= 89 || ord($character) <= 121) {
+        if (ord($character) >= 65 && ord($character) <= 89 || ord($character) >= 97  && ord($character) <= 121) {
             return chr(ord($character) + 1);
         }
 
@@ -24,14 +24,8 @@ class ChangeString
     {
         $result = '';
         if ($string && strlen($string) > 0) {
-            $alfabeto = 'abcdefghijklmnopqrstuvwxyz';
             for ($i = 0; $i < strlen($string); ++$i) {
-                if (stripos($alfabeto, $string[$i]) !== false) {
-                    $result .= $this->convertCharacter($string[$i]);
-                } else {
-                    $result .= $string[$i];
-                }
-
+                $result .= $this->convertCharacter($string[$i]);
             }
         }
 
