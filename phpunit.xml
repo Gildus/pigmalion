@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="tests/autoload.php" colors="true">
+    <testsuites>
+        <testsuite name="Testing problems 1">
+            <directory>test/parte1/problem1/</directory>
+        </testsuite>
+    </testsuites>
+    <testsuites>
+        <testsuite name="Testing problems 2">
+            <directory>test/parte1/problem2/</directory>
+        </testsuite>
+    </testsuites>
+    <testsuites>
+        <testsuite name="Testing problems 3">
+            <directory>test/parte1/problem3/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/part1/problem1/</directory>
+            <directory suffix=".php">src/part1/problem2/</directory>
+            <directory suffix=".php">src/part1/problem3/</directory>
+        </whitelist>
+    </filter>
+</phpunit>

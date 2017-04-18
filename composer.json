@@ -1,0 +1,11 @@
+{
+    "name": "gildus/pigmalion",
+    "description": "Solutiones de problemas",
+    "authors": [
+        {
+            "name": "Gildus",
+            "email": "gildus@gmail.com"
+        }
+    ],
+    "require": {}
+}
