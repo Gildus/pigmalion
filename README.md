@@ -63,7 +63,8 @@ es necesario que se tenga instalado las librerías:
 - php-soap
 - php-intl
 
-Para ver las definiciones del XML estan en el endpoint http://localhost:8888/v1/wsdl
+Para ver las definiciones del XML estan en el endpoint http://localhost:8888/v1/wsdl, en nuestro caso usamos NGINX 
+localment configurado como http://slim:83  
 
 ```xml
 <definitions name="serviceEmployee" targetNamespace="http://slim:83/v1" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://slim:83/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
