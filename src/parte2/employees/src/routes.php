@@ -1,6 +1,4 @@
 <?php
-
-// Register with container
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server as SoapServer;
 
@@ -8,6 +6,7 @@ $container = $app->getContainer();
 $container['csrf'] = function ($c) {
     return new \Slim\Csrf\Guard;
 };
+
 
 $app->get('/', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
