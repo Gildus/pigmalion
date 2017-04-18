@@ -1,48 +1,19 @@
 <?php
 
 // Register with container
+use Zend\Soap\AutoDiscover;
+use Zend\Soap\Server as SoapServer;
+
 $container = $app->getContainer();
 $container['csrf'] = function ($c) {
     return new \Slim\Csrf\Guard;
-};
-$container['dataEmployees'] = function($container) {
-    $newObject =  new class($container) {
-        protected  $container;
-        public function __construct($container)
-        {
-            $this->container = $container;
-        }
-
-        public function findFromJson($field, $value)
-        {
-            $dataComplete = $this->getData();
-            $result = [];
-            foreach ($dataComplete as $item) {
-                if (isset($item->email) && $item->{$field} == $value) {
-                    $result[] = $item;
-                }
-            }
-
-            return $result;
-        }
-
-        public function getData()
-        {
-            $data = $str = file_get_contents($this->container->get('data_employees'));
-            $dataComplete = json_decode($data);
-            return $dataComplete;
-        }
-    };
-
-
-    return $newObject;
 };
 
 $app->get('/', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 })->setName('home');
 
-$app->get('/listado', function($request, $response, $args) use($app) {
+$app->get('/listado', function($request, $response, $args) {
 
     $services = $this->get('dataEmployees');
     $empleados = $services->getData();
@@ -62,7 +33,7 @@ $app->get('/listado', function($request, $response, $args) use($app) {
     ]);
 })->add($container->get('csrf'))->setName('listado-empleados');
 
-$app->post('/listado', function($request, $response) use($app) {
+$app->post('/listado', function($request, $response) {
 
     $email = $request->getParam('email');
     $services = $this->get('dataEmployees');
@@ -81,3 +52,27 @@ $app->post('/empleado/ver/{id}', function ($request, $response, $args) {
 
     return $response->withJson($empleado ? $empleado[0] : []);
 })->setName('ver-empleado');
+
+
+$app->get("/v1/wsdl", function($request, $response) {
+    $url_webservice = $request->getUri()->getBaseUrl().'/v1';
+    $autodiscover = new AutoDiscover();
+    $autodiscover 	->setClass(serviceEmployee::class)
+        ->setServiceName(serviceEmployee::class)
+        ->setUri($url_webservice);
+
+    $response = $response->withHeader('Content-type', 'application/xml');
+    $response->write($autodiscover->toXml());
+    return $response;
+});
+
+$app->post("/v1", function($request, $response) {
+    $url_webservice = $request->getUri()->getBaseUrl().'/v1';
+    $server = new SoapServer($url_webservice."/wsdl", [
+        'uri' => $url_webservice,
+        'location' => $url_webservice,
+    ]);
+    $server->setClass(serviceEmplo  yee::class);
+    
+    return $server->handle();
+});

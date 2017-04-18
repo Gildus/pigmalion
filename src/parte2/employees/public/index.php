@@ -23,6 +23,9 @@ require __DIR__ . '/../src/dependencies.php';
 // Register middleware
 require __DIR__ . '/../src/middleware.php';
 
+// Services Employees
+require __DIR__ . '/../src/serviceEmployee.php';
+
 // Register routes
 require __DIR__ . '/../src/routes.php';
 
