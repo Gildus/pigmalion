@@ -72,7 +72,6 @@ $app->post("/v1", function($request, $response) {
         'uri' => $url_webservice,
         'location' => $url_webservice,
     ]);
-    $server->setClass(serviceEmplo  yee::class);
-    
+    $server->setClass(serviceEmployee::class);
     return $server->handle();
 });
