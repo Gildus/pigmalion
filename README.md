@@ -246,3 +246,16 @@ y el resultado es como sigue:
    </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 ```
+
+Notas
+---
+
+Se usaron:
+- PHP 7.0
+- Slim Framework 3
+- Zend Soap
+- NGINX
+
+Existen muchas mejoras que pueden plantearse a nivel de arquitectura, cualquier mejora son bienvenidas.
+No se uso un ORM ni un motor o gestor para las vistas, ya que como objetivo se preferia tener 
+lo más minimos posible.
