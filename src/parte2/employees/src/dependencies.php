@@ -44,6 +44,7 @@ $container['dataEmployees'] = function($container) {
         {
             $data = $str = file_get_contents($this->container->get('data_employees'));
             $dataComplete = json_decode($data);
+
             return $dataComplete;
         }
     };
