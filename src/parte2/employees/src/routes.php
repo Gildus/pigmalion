@@ -6,16 +6,24 @@ $container['csrf'] = function ($c) {
     return new \Slim\Csrf\Guard;
 };
 
-function searchEmployees($data, $need)
+function searchEmployees($data, $needed)
 {
+    $result = [];
+    foreach ($data as $item) {
+        if (isset($item->email) && $item->email == $needed) {
+            $result[] = $item;
+        }
+    }
 
+    return $result;
 }
 
 $app->get('/', function ($request, $response, $args) {
     return $this->renderer->render($response, 'index.phtml', $args);
 })->setName('home');
 
-$app->get('/listado', function($request, $response) use($app) {
+$app->get('/listado', function($request, $response, $args) use($app) {
+
     $services = $app->getContainer();
     $data = $str = file_get_contents($services->get('data_employees'));
     $empleados = json_decode($data);
@@ -25,35 +33,30 @@ $app->get('/listado', function($request, $response) use($app) {
     $name = $request->getAttribute($nameKey);
     $value = $request->getAttribute($valueKey);
 
-    $tokenArray = [
-        $nameKey => $name,
-        $valueKey => $value
-    ];
+    return $this->renderer->render($response, 'listado.phtml', [
+        'empleados' => $empleados,
+        'csrfToken' => [
+            $nameKey => $name,
+            $valueKey => $value
+        ],
+
+    ]);
+})->add($container->get('csrf'))->setName('listado-empleados');
+
+$app->post('/listado', function($request, $response, $args) use($app) {
+
+    $services = $app->getContainer();
+    $data = $str = file_get_contents($services->get('data_employees'));
+    $dataComplete = json_decode($data);
+
+    $email = $request->getParam('email');
+    $empleados = searchEmployees($dataComplete, $email);
 
     return $this->renderer->render($response, 'listado.phtml', [
         'empleados' => $empleados,
-        'csrfToken' => $tokenArray,
-
+        'returnList' => true,
     ]);
-})->add($container->get('csrf'))->setName('listado-empleados');
-
-$app->post('/listado', function($request, $response) use($app) {
-    $services = $app->getContainer();
-    $data = $str = file_get_contents($services->get('data_employees'));
-    $empleados = json_decode($data);
-
-    $email = $request->getParam('email');
-    $ok = $app->v::string()->notEmpty()->validate($email);
-    var_dump($ok); exit;
-    searchEmployees($email);
-
-
-    return $this->renderer->render($response, 'listado.phtml', [
-        'empleados' => $empleados
-    ]);
-})->add($container->get('csrf'))->setName('listado-empleados');
-
-
+})->add($container->get('csrf'))->setName('listado-empleados-post');
 
 $app->get('/ver/empleado', function ($request, $response, $args) {
     die('Vamos');

@@ -58,6 +58,9 @@
     </nav>
 
     <h2>Listado de Empledos</h2>
+    <?php if (isset($returnList)) : ?>
+        <a href="/listado" class="btn btn-success">Volver al Listado</a>
+    <?php endif ?>
     <table class="table  table-hover table-condensed">
         <thead>
         <tr>
