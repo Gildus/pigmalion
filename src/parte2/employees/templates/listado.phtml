@@ -77,10 +77,30 @@
                 <td><?= $empleado->email ?></td>
                 <td><?= $empleado->position ?></td>
                 <td><?= $empleado->salary ?></td>
+                <td>
+                    <button class="btn btn-sm btn-primary" data-id="<?= $empleado->id ?>" data-toggle="modal" data-target="#modalEmpleadoDetalles">
+                        Ver detalles
+                    </button>
+                </td>
             </tr>
         <?php endforeach;?>
         </tbody>
     </table>
+
+    <div class="modal fade" id="modalEmpleadoDetalles" tabindex="-1" role="dialog" aria-labelledby="modalEmpleadoDetalles">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Detalles del Empleado</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div> <!-- /container -->
 
@@ -89,6 +109,38 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    $('#modalEmpleadoDetalles').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        if (id) {
+            var modal = $(this);
+            $.post( "/empleado/ver/"+id, {
+                'csrf_name': '<?= $csrfToken['csrf_name'] ?>',
+                'csrf_value': '<?= $csrfToken['csrf_value'] ?>'
+            }).done(function(data){
+                var ol = $('<ol></ol>');
+                Object.entries(data).map(function(item) {
+                    if (item.length === 2) {
+                        if (item[0] == "skills") {
+                            var ul = $('<ul>');
+                            if (item[1].length > 0) {
+                                item[1].map(function(sk){
+                                    ul.append('<li><strong>'+sk.skill+'</strong></li>');
+                                });
+                            }
+                            ol.append('<li>'+item[0] + ': <ul>'+ul.html()+'</ul></li>')
+                        } else {
+                            ol.append('<li>'+item[0] + ': <strong>'+item[1]+'</strong></li>')
+                        }
+                    }
+                });
+                modal.find('.modal-body').append(ol);
+            });
+        }
+
+    })
+</script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
