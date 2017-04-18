@@ -16,4 +16,5 @@ return [
             'level' => \Monolog\Logger::DEBUG,
         ],
     ],
+    'data_employees' => __DIR__.'/../data/employees.json',
 ];

@@ -1,14 +1,14 @@
 # Pigmalion
 Resolución de Problemas:
 
-Ejecutando los algoritmos:
---
+Parte 1:
+-----------
 La parte 1 ejecutamos las pruebas desde la consola con php:
 
 - Problema 1
 
 ```bash
-$ php src/parte1/problem1/ChangeString.php
+php src/parte1/problem1/ChangeString.php
 ```
 Entradas y Salidas:
 
@@ -28,7 +28,7 @@ Input: 2,4,9       Output: 2,3,4,5,6,7,8,9
 ````
 
 ```bash
-$ php src/parte1/problem1/CompleteRange.php
+php src/parte1/problem1/CompleteRange.php
 ```
 
 - Problema 3
@@ -41,7 +41,17 @@ Input: ()(()         Output: ()()
 ````
 
 ```bash
-$ php src/parte1/problem1/ClearPar.php
+php src/parte1/problem1/ClearPar.php
 ```
 
 
+Parte 2:
+-----------
+La parte 2 ejecutamos las pruebas desde la consola con php:
+
+````
+$ cd parte2/employess 
+$ php -S localhost:8080 public/index.php
+````
+
+Y en el navegador ingresamos a la URL http://localhost:8080 para ver las opciones que deseamos sobre los empleados
