@@ -8,7 +8,7 @@ $container['csrf'] = function ($c) {
 };
 
 $app->get('/', function ($request, $response, $args) {
-    return $this->renderer->render($response, 'index.phtml', $args);
+    return $this->view->render($response, 'index.phtml');
 })->setName('home');
 
 $app->get('/listado', function($request, $response, $args) {
@@ -20,7 +20,7 @@ $app->get('/listado', function($request, $response, $args) {
     $name = $request->getAttribute($nameKey);
     $value = $request->getAttribute($valueKey);
 
-    return $this->renderer->render($response, 'listado.phtml', [
+    return $this->view->render($response, 'listado.phtml', [
         'empleados' => $empleados,
         'csrfToken' => [
             $nameKey => $name,
@@ -28,18 +28,23 @@ $app->get('/listado', function($request, $response, $args) {
         ],
 
     ]);
-})->add($container->get('csrf'))->setName('listado-empleados');
+})->setName('listado-empleados-get')->add($container->get('csrf'));
 
 $app->post('/listado', function($request, $response) {
     $email = $request->getParam('email');
-    $services = $this->get('dataEmployees');
-    $empleados = $services->findFromJson('email', $email);
+    if ($email && strlen($email) >= 3) {
+        $services = $this->get('dataEmployees');
+        $empleados = $services->findFromJson('email', $email);
 
-    return $this->renderer->render($response, 'listado.phtml', [
-        'empleados' => $empleados,
-        'returnList' => true,
-    ]);
-})->add($container->get('csrf'))->setName('listado-empleados-post');
+        return $this->view->render($response, 'listado.phtml', [
+            'empleados' => $empleados,
+            'returnList' => true,
+        ]);
+    }
+
+    return $response->withRedirect('/listado');
+
+})->setName('listado-empleados-post')->add($container->get('csrf'));
 
 $app->post('/empleado/ver/{id}', function ($request, $response, $args) {
     $id = $args['id'];
@@ -47,7 +52,7 @@ $app->post('/empleado/ver/{id}', function ($request, $response, $args) {
     $empleado = $services->findFromJson('id', $id);
 
     return $response->withJson($empleado ? $empleado[0] : []);
-})->setName('ver-empleado');
+})->setName('ver-detalles-empleado');
 
 $app->get("/v1/wsdl", function($request, $response) {
     $url_webservice = $request->getUri()->getBaseUrl().'/v1';

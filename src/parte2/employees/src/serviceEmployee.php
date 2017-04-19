@@ -26,11 +26,13 @@ class serviceEmployee
      */
     public function searchBySalary($min, $max){
         $result = [];
-        foreach ($this->empleados as $empleado) {
-            $salaryInNumbers = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
-            $num = $salaryInNumbers->parseCurrency($empleado->salary, $curr);
-            if ($min <= $num && $num <= $max) {
-                $result[] = $empleado;
+        if ($min <= $max) {
+            foreach ($this->empleados as $empleado) {
+                $salaryInNumbers = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+                $num = $salaryInNumbers->parseCurrency($empleado->salary, $curr);
+                if ($min <= $num && $num <= $max) {
+                    $result[] = $empleado;
+                }
             }
         }
 

@@ -1,0 +1,83 @@
+{% extends "layouts/template.phtml" %}
+{% block title %}Developer SAC{% endblock %}
+
+{% block content %}
+    <h2>Listado de Empledos</h2>
+    {% if returnList is defined %}
+        <a href="{{ path_for('listado-empleados-get') }}" class="btn btn-success">Restaurar Listado</a>
+    {% endif %}
+    <table class="table  table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Position</th>
+            <th>Salary</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for empleado in empleados %}
+        <tr>
+            <td>{{ empleado.name }}</td>
+            <td>{{ empleado.email }}</td>
+            <td>{{ empleado.position }}</td>
+            <td>{{ empleado.salary }}</td>
+            <td>
+                <button class="btn btn-sm btn-primary" data-id="{{ empleado.id }}" data-toggle="modal" data-target="#modalEmpleadoDetalles">
+                    Ver detalles
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="modalEmpleadoDetalles" tabindex="-1" role="dialog" aria-labelledby="modalEmpleadoDetalles">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Detalles del Empleado</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $('#modalEmpleadoDetalles').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            if (id) {
+                var modal = $(this);
+                modal.find('.modal-body').html('');
+                $.post( "{{ path_for('ver-detalles-empleado', {'id' : ''}) }}"+id, function(data) {
+                    var ol = $('<ol></ol>');
+                    Object.entries(data).map(function(item) {
+                        if (item.length === 2) {
+                            if (item[0] == "skills") {
+                                var ul = $('<ul>');
+                                if (item[1].length > 0) {
+                                    item[1].map(function(sk){
+                                        ul.append('<li><strong>'+sk.skill+'</strong></li>');
+                                    });
+                                }
+                                ol.append('<li>'+item[0] + ': <ul>'+ul.html()+'</ul></li>')
+                            } else {
+                                ol.append('<li>'+item[0] + ': <strong>'+item[1]+'</strong></li>')
+                            }
+                        }
+                    });
+                    modal.find('.modal-body').append(ol);
+                });
+            }
+        })
+    </script>
+
+{% endblock %}

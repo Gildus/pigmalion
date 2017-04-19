@@ -32,7 +32,7 @@ $container['dataEmployees'] = function($container) {
             $dataComplete = $this->getData();
             $result = [];
             foreach ($dataComplete as $item) {
-                if (isset($item->email) && $item->{$field} == $value) {
+                if (isset($item->email) && stristr($item->{$field}, $value)) {
                     $result[] = $item;
                 }
             }
