@@ -6,7 +6,3 @@ machine:
 test:
     override:
         - phpunit tests
-dependencies:
-    pre:
-        - pecl install intl
-        - apt-get install php-soap
