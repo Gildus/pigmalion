@@ -1,0 +1,12 @@
+machine:
+    timezone:
+        America/Lima
+    php:
+        version: 7.0.18
+test:
+    override:
+        - phpunit tests
+dependencies:
+    pre:
+        - pecl install intl
+        - apt-get install php-soap
