@@ -2,7 +2,7 @@ machine:
     timezone:
         America/Lima
     php:
-        version: 7.0.18
+        version: 7.0.17
 test:
     override:
         - phpunit tests
