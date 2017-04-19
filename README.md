@@ -253,8 +253,9 @@ Notas
 
 Se usaron:
 - PHP 7.0
-- Slim Framework 3
+- Slim MicroFramework 3
 - Zend Soap
+- Twig
 - NGINX
 
 Existen muchas mejoras que pueden plantearse a nivel de arquitectura, cualquier mejora son bienvenidas.
